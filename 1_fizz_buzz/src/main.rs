@@ -6,6 +6,7 @@ use fizz_buzz::{
 };
 
 fn main() {
+  let mut bounds: Vec<i32> = Vec::new();
   let mut start: i32 = 1;
   let mut end: i32 = 1;
   let mut quiet: bool = false;
@@ -20,39 +21,33 @@ fn main() {
     args.retain(|arg| *arg != quiet_flag)
   }
 
-  // ensure remaining arguments are valid
-  if args.len() == 1 {
-    match args.remove(0).parse::<i32>() {
-      Ok(val) => {
-        end = val;
-      },
-      Err(_) => {
-        error_int_args();
-      }
-    }
-  } else if args.len() == 2 {
-    match args.remove(0).parse::<i32>() {
-      Ok(val) => {
-        start = val;
-      },
-      Err(_) => {
-        error_int_args();
-      }
-    }
-    match args.remove(0).parse::<i32>() {
-      Ok(val) => {
-        end = val;
-      },
-      Err(_) => {
-        error_int_args();
-      }
-    }
-  } else {
+  // ensure remaining args are valid
+  if args.len() > 2 {
     print_usage_and_exit();
   }
 
-  if start <= 0 || end <= 0 {
-    error_int_args();
+  for arg in &args {
+    match arg.parse::<i32>() {
+      Ok(val) => {
+        if val <= 0 {
+          error_int_args();
+        } else {
+          bounds.push(val)
+        }
+      },
+      Err(_) => {
+        error_int_args();
+      }
+    }
+  }
+
+  // update actual bounds from processed args
+  if bounds.len() > 0  {
+    end = bounds.pop().unwrap()
+  }
+
+  if bounds.len() > 0 {
+    start = bounds.pop().unwrap()
   }
 
   if end < start {
