@@ -1,4 +1,4 @@
-pub fn fizz_buzz(start: i32, end: i32) {
+pub fn fizz_buzz(start: i32, end: i32, quiet: bool) {
   for i in start..=end {
     /*
      * "PRETTY NAIVE" APPROACH
@@ -13,7 +13,7 @@ pub fn fizz_buzz(start: i32, end: i32) {
       }
     } else if i % 5 == 0 {
       println!("Buzz");
-    } else {
+    } else if !quiet {
       println!("{}", i);
     }
 
@@ -50,4 +50,21 @@ pub fn fizz_buzz(start: i32, end: i32) {
     //   println!("{}", i);
     // }
   }
+}
+
+
+pub fn error_int_args() {
+  println!("Arguments must be integers greater than 0");
+  std::process::exit(-1);
+}
+
+pub fn error_end_bounds() {
+  println!("Second argument must be greater than the first argument when both are provided");
+  std::process::exit(-1);
+}
+
+pub fn print_usage_and_exit() {
+  println!("FizzBuzz: so simple, a third-grader might have nightmares about it");
+  println!("USAGE: provided one or two integer inputs, it does the thing *inclusively*");
+  std::process::exit(-1);
 }
